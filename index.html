@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Texas Trip · May 15–17, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --burnt: #154734;
+    --gold: #FFB81C;
+    --cream: #FAF6EE;
+    --dark: #1C1A17;
+    --card: #FFFFFF;
+    --muted: #6B6560;
+    --border: #E8E2D9;
+    --green: #154734;
+    --sky: #154734;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: var(--dark);
+    padding: 36px 20px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '✦';
+    position: absolute;
+    font-size: 160px;
+    opacity: 0.04;
+    top: -20px; left: -20px;
+    color: var(--gold);
+  }
+  .hero::after {
+    content: '★';
+    position: absolute;
+    font-size: 120px;
+    opacity: 0.04;
+    bottom: -20px; right: -10px;
+    color: var(--gold);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.1;
+  }
+  .hero-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+  .party-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,184,28,0.15);
+    border: 1px solid rgba(255,184,28,0.3);
+    border-radius: 20px;
+    padding: 6px 14px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .tab-nav {
+    display: flex;
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 0 8px 8px;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 70px;
+    padding: 8px 4px;
+    background: rgba(255,255,255,0.06);
+    border: none;
+    border-radius: 8px;
+    color: rgba(255,255,255,0.5);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn.active {
+    background: var(--burnt);
+    color: #fff;
+  }
+  .tab-btn span { display: block; font-size: 16px; margin-bottom: 2px; }
+
+  .section { display: none; padding: 16px 16px 32px; }
+  .section.active { display: block; }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    margin-top: 4px;
+  }
+  .day-badge {
+    background: var(--burnt);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .day-badge.blue { background: var(--sky); }
+  .day-badge.green { background: var(--green); }
+  .day-divider { flex: 1; height: 1px; background: var(--border); }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-plane { background: #EEF3FA; }
+  .icon-hotel { background: #F3F0EA; }
+  .icon-grad { background: #EAF3EE; }
+  .icon-food { background: #FDF0E8; }
+  .icon-map { background: #F0EEF7; }
+  .icon-ktn { background: #FEF9EC; }
+
+  .card-title { font-size: 15px; font-weight: 500; color: var(--dark); }
+  .card-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .card-body { padding: 12px 16px 14px; }
+
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label {
+    min-width: 90px;
+    color: var(--muted);
+    font-size: 12px;
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+  .info-value { color: var(--dark); font-weight: 400; line-height: 1.4; }
+  .info-value strong { font-weight: 500; }
+
+  .ktn-box {
+    background: #FEF9EC;
+    border: 1px solid #EEDFA0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .ktn-name { font-size: 13px; font-weight: 500; color: var(--dark); margin-bottom: 6px; }
+  .ktn-number {
+    font-family: 'Courier New', monospace;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--burnt);
+    letter-spacing: 1px;
+  }
+  .ktn-exp { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .map-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--burnt);
+    color: white;
+    text-decoration: none;
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+  }
+  .map-btn:hover { opacity: 0.88; }
+  .map-btn.blue-btn { background: var(--sky); }
+  .map-btn.green-btn { background: var(--green); }
+
+  .flight-route {
+    display: flex;
+    align-items: center;
+    padding: 14px 0 8px;
+  }
+  .airport-code {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1;
+  }
+  .airport-city { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .flight-arrow {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 0 12px;
+  }
+  .flight-line {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+  }
+  .line { flex: 1; height: 1.5px; background: var(--border); }
+  .nonstop-label { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; margin-top: 4px; }
+
+  .tip-box {
+    background: #F3F0EA;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .tip-box strong { color: var(--dark); }
+
+  .conf-box {
+    background: #F7F3FF;
+    border: 1px solid #DDD5F5;
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .conf-label { font-size: 11px; color: var(--muted); }
+  .conf-num { font-family: 'Courier New', monospace; font-weight: bold; font-size: 16px; color: var(--dark); }
+
+  .explore-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 14px 16px;
+  }
+  .explore-title { font-size: 15px; font-weight: 500; color: var(--dark); margin-bottom: 4px; }
+  .explore-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 2px 8px;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .tag-orange { background: #FDF0E8; color: var(--burnt); }
+  .tag-purple { background: #F0EEF7; color: #5B4B8A; }
+  .tag-green { background: #EAF3EE; color: var(--green); }
+  .explore-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  .tab-nav::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">May 15 – 17, 2026</div>
+  <h1>Texas, Here We Come</h1>
+  <div class="hero-sub">Austin · Waco · Baylor Graduation</div>
+  <div class="party-pill">👨‍👩‍👦 5 Travelers · Webster Family</div>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="show('flights', this)"><span>✈️</span>Flights</button>
+  <button class="tab-btn" onclick="show('hotel', this)"><span>🏨</span>Hotel</button>
+  <button class="tab-btn" onclick="show('grad', this)"><span>🎓</span>Graduation</button>
+  <button class="tab-btn" onclick="show('austin', this)"><span>🌆</span>Austin</button>
+  <button class="tab-btn" onclick="show('waco', this)"><span>🌿</span>Waco</button>
+  <button class="tab-btn" onclick="show('ktn', this)"><span>🛡️</span>TSA</button>
+</nav>
+
+<!-- FLIGHTS -->
+<div id="flights" class="section active">
+  <div class="day-header">
+    <div class="day-badge">Friday · May 15</div>
+    <div class="day-divider"></div>
+    <span style="font-size:12px;color:var(--muted)">Departing</span>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-plane">✈️</div>
+      <div>
+        <div class="card-title">Southwest Flight 1447</div>
+        <div class="card-subtitle">Outbound · Nonstop · 2h 50m</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="flight-route">
+        <div style="text-align:center">
+          <div class="airport-code">SNA</div>
+          <div class="airport-city">Orange County</div>
+          <div style="font-size:13px;font-weight:500;margin-top:6px;">7:50 AM</div>
+        </div>
+        <div class="flight-arrow">
+          <div class="flight-line">
+            <div class="line"></div>
+            <span style="font-size:16px;">✈</span>
+            <div class="line"></div>
+          </div>
+          <div class="nonstop-label">NONSTOP</div>
+        </div>
+        <div style="text-align:center">
+          <div class="airport-code">AUS</div>
+          <div class="airport-city">Austin, TX</div>
+          <div style="font-size:13px;font-weight:500;margin-top:6px;">12:40 PM</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Passengers</span>
+        <span class="info-value">5 passengers · Choice fare</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Note</span>
+        <span class="info-value">Add KTN numbers when checking in for TSA PreCheck</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-header" style="margin-top:20px;">
+    <div class="day-badge blue">Sunday · May 17</div>
+    <div class="day-divider"></div>
+    <span style="font-size:12px;color:var(--muted)">Returning</span>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-plane">✈️</div>
+      <div>
+        <div class="card-title">Southwest Flight 1766</div>
+        <div class="card-subtitle">Return · Nonstop · 3h 15m</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="flight-route">
+        <div style="text-align:center">
+          <div class="airport-code">AUS</div>
+          <div class="airport-city">Austin, TX</div>
+          <div style="font-size:13px;font-weight:500;margin-top:6px;">7:00 PM</div>
+        </div>
+        <div class="flight-arrow">
+          <div class="flight-line">
+            <div class="line"></div>
+            <span style="font-size:16px;">✈</span>
+            <div class="line"></div>
+          </div>
+          <div class="nonstop-label">NONSTOP</div>
+        </div>
+        <div style="text-align:center">
+          <div class="airport-code">SNA</div>
+          <div class="airport-city">Orange County</div>
+          <div style="font-size:13px;font-weight:500;margin-top:6px;">8:15 PM</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Drive</span>
+        <span class="info-value">Allow ~1.5 hrs from Waco → Austin airport</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOTEL -->
+<div id="hotel" class="section">
+  <div class="day-header">
+    <div class="day-badge">May 15 – 17</div>
+    <div class="day-divider"></div>
+    <span style="font-size:12px;color:var(--muted)">2 nights</span>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-hotel">🏨</div>
+      <div>
+        <div class="card-title">Home2 Suites by Hilton Waco</div>
+        <div class="card-subtitle">Check In: Fri May 15 · Check Out: Sun May 17</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="conf-box">
+        <div>
+          <div class="conf-label">Hilton Confirmation #</div>
+          <div class="conf-num">84979088</div>
+        </div>
+        <span style="font-size:20px;">🏷️</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Address</span>
+        <span class="info-value">2500 Bagby Avenue, Waco, TX 76706</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Check In</span>
+        <span class="info-value"><strong>4:00 PM</strong> Friday, May 15</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Check Out</span>
+        <span class="info-value"><strong>11:00 AM</strong> Sunday, May 17</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value"><a href="tel:+12547524400" style="color:var(--burnt);text-decoration:none;">+1 254-752-4400</a></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Honors #</span>
+        <span class="info-value">1523147062</span>
+      </div>
+      <a class="map-btn" href="https://maps.google.com/?q=2500+Bagby+Avenue+Waco+TX+76706" target="_blank">📍 Navigate to Hotel</a>
+    </div>
+  </div>
+  <div class="tip-box">
+    <strong>Drive from Austin Airport → Waco:</strong> About 95 miles, roughly 1.5 hours on I-35 North. You'll arrive well before 4 PM check-in if you explore Austin for a couple hours after landing at 12:40 PM.
+  </div>
+</div>
+
+<!-- GRADUATION -->
+<div id="grad" class="section">
+  <div class="day-header">
+    <div class="day-badge green">Saturday · May 16</div>
+    <div class="day-divider"></div>
+    <span style="font-size:12px;color:var(--muted)">The Big Day 🎓</span>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-grad">🎓</div>
+      <div>
+        <div class="card-title">Baylor University Commencement</div>
+        <div class="card-subtitle">Hankamer School of Business</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-row">
+        <span class="info-label">Ceremony</span>
+        <span class="info-value"><strong>2:30 PM</strong> · Saturday, May 16</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Venue</span>
+        <span class="info-value">Ferrell Center, Baylor University</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Address</span>
+        <span class="info-value">1900 S University Parks Dr, Waco, TX 76706</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value"><a href="tel:+12547101000" style="color:var(--burnt);text-decoration:none;">+1 254-710-1000</a></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Tip</span>
+        <span class="info-value">Plan to arrive by <strong>1:45 PM</strong> — large crowds expected, parking in surface lots next to Ferrell Center</span>
+      </div>
+      <a class="map-btn green-btn" href="https://maps.google.com/?q=Ferrell+Center+1900+S+University+Parks+Dr+Waco+TX" target="_blank">📍 Navigate to Ferrell Center</a>
+    </div>
+  </div>
+  <div class="tip-box">
+    <strong>Saturday Schedule:</strong> Morning free (Silos open 9 AM–6 PM — perfect for a morning visit!). Grab lunch near campus, then head to the Ferrell Center. The hotel is only about 10 minutes away.
+  </div>
+</div>
+
+<!-- AUSTIN -->
+<div id="austin" class="section">
+  <div class="day-header">
+    <div class="day-badge">Friday · May 15</div>
+    <div class="day-divider"></div>
+    <span style="font-size:12px;color:var(--muted)">~2 hrs after landing</span>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;">You land at 12:40 PM and need to be in Waco by 4 PM. That gives you about 1.5–2 hours to grab lunch and see a bit of Austin. Here are friendly options for your group!</p>
+
+  <div class="explore-card">
+    <div class="explore-title">South Congress Avenue (SoCo) 🌟</div>
+    <div><span class="explore-tag tag-purple">Neighborhood Stroll</span></div>
+    <div class="explore-desc">Austin's most iconic stretch — quirky boutiques, boot shops, murals, and great food all in a walkable strip. Perfect for a quick taste of Austin's personality. Easy for all ages and very accessible.</div>
+    <div class="info-row" style="border:none;padding:0 0 8px;">
+      <span class="info-label">Address</span>
+      <span class="info-value">S Congress Ave, Austin, TX 78704</span>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=South+Congress+Avenue+Austin+TX" target="_blank">📍 Navigate to South Congress</a>
+  </div>
+
+  <div class="explore-card">
+    <div class="explore-title">ATX Cocina 🌮</div>
+    <div><span class="explore-tag tag-orange">Restaurant</span></div>
+    <div class="explore-desc">Upscale modern Mexican in downtown Austin — beautiful presentation, gluten-free menu, lively but not too loud. Reviewers rave about the carne asada and handmade tortillas. Note: opens at 4 PM Fridays — great for dinner if you return to Austin!</div>
+    <div class="info-row" style="border:none;padding:0 0 4px;">
+      <span class="info-label">Address</span>
+      <span class="info-value">110 San Antonio St #170, Austin, TX 78701</span>
+    </div>
+    <div class="info-row" style="border:none;padding:0 0 8px;">
+      <span class="info-label">Hours</span>
+      <span class="info-value">Opens 4 PM Fri · Better for a quick SoCo bite at lunch</span>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=ATX+Cocina+110+San+Antonio+St+Austin+TX" target="_blank">📍 Navigate to ATX Cocina</a>
+  </div>
+
+  <div class="explore-card">
+    <div class="explore-title">Upstairs at Caroline 🍽️</div>
+    <div><span class="explore-tag tag-green">Family-Friendly · Games</span></div>
+    <div class="explore-desc">A 4.9-star downtown gem with great food, rooftop views, and games like foosball and Jenga. Multiple reviewers mention it was perfect for families with teens — Carter would love it! Open from noon on Friday.</div>
+    <div class="info-row" style="border:none;padding:0 0 4px;">
+      <span class="info-label">Address</span>
+      <span class="info-value">109 E 7th St, Austin, TX 78701</span>
+    </div>
+    <div class="info-row" style="border:none;padding:0 0 8px;">
+      <span class="info-label">Phone</span>
+      <span class="info-value"><a href="tel:+15129826766" style="color:var(--burnt);text-decoration:none;">+1 512-982-6766</a></span>
+    </div>
+    <a class="map-btn blue-btn" href="https://maps.google.com/?q=Upstairs+at+Caroline+109+E+7th+St+Austin+TX" target="_blank">📍 Navigate to Upstairs at Caroline</a>
+  </div>
+
+  <div class="tip-box">
+    <strong>Quick Plan:</strong> Land 12:40 PM → rideshare to SoCo (15 min) → walk around and grab lunch → head to Waco by 2:00–2:30 PM → arrive hotel ~4 PM.
+  </div>
+</div>
+
+<!-- WACO -->
+<div id="waco" class="section">
+  <div class="day-header">
+    <div class="day-badge green">Waco Extras</div>
+    <div class="day-divider"></div>
+    <span style="font-size:12px;color:var(--muted)">When time allows</span>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;">These are bonus stops — no pressure to fit them in, just handy to have if you find yourself with spare time!</p>
+
+  <div class="explore-card">
+    <div class="explore-title">Magnolia Silos ✨</div>
+    <div><span class="explore-tag tag-orange">Chip & Joanna Gaines</span></div>
+    <div class="explore-desc">The iconic home of Fixer Upper — beautifully landscaped grounds, the Magnolia Market, food trucks, and the famous silos. <strong>Saturday morning is the perfect window</strong> — open at 9 AM, just a short drive from your hotel before the 2:30 ceremony.</div>
+    <div class="info-row" style="border:none;padding:0 0 4px;">
+      <span class="info-label">Address</span>
+      <span class="info-value">601 Webster Ave, Waco, TX 76706</span>
+    </div>
+    <div class="info-row" style="border:none;padding:0 0 4px;">
+      <span class="info-label">Hours</span>
+      <span class="info-value">Mon–Sat: 9:00 AM – 6:00 PM · <strong>Closed Sundays</strong></span>
+    </div>
+    <div class="info-row" style="border:none;padding:0 0 8px;">
+      <span class="info-label">Rating</span>
+      <span class="info-value">⭐ 4.6 · 2,975 reviews · Free admission</span>
+    </div>
+    <a class="map-btn green-btn" href="https://maps.google.com/?q=Magnolia+Silos+601+Webster+Ave+Waco+TX" target="_blank">📍 Navigate to Magnolia Silos</a>
+  </div>
+
+  <div class="tip-box">
+    <strong>Suggested Saturday Flow:</strong> 9:00 AM → Magnolia Silos (right when they open — less crowded!) → 11:30 AM → Lunch near campus → 1:45 PM → Arrive Ferrell Center → 2:30 PM → 🎓 Graduation!
+  </div>
+</div>
+
+<!-- TSA -->
+<div id="ktn" class="section">
+  <div class="day-header">
+    <div class="day-badge">TSA PreCheck ✅</div>
+    <div class="day-divider"></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-ktn">🛡️</div>
+      <div>
+        <div class="card-title">Known Traveler Numbers</div>
+        <div class="card-subtitle">Add to Southwest reservation at check-in</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="ktn-box">
+        <div class="ktn-name">👩 Tiffiny McMillion Webster</div>
+        <div class="ktn-number">TE01425656</div>
+        <div class="ktn-exp">Expires: April 10, 2031 · Eligible to renew: October 10, 2030</div>
+      </div>
+      <div class="ktn-box">
+        <div class="ktn-name">👦 Carter Vaughn Webster</div>
+        <div class="ktn-number">TE01425684</div>
+        <div class="ktn-exp">Expires: April 10, 2031 · Eligible to renew: October 10, 2030</div>
+      </div>
+      <div class="info-row" style="margin-top:8px;">
+        <span class="info-label">Status</span>
+        <span class="info-value" style="color:var(--green);font-weight:500;">✅ Approved</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">How to use</span>
+        <span class="info-value">Enter your KTN when booking or during online check-in on Southwest.com to unlock the TSA PreCheck lane</span>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <strong>Reminder:</strong> TSA PreCheck means no removing shoes, laptops, or liquids for Tiffiny and Carter. For Mom (79) and Aunt (75), they may qualify for TSA expedited screening for seniors even without PreCheck — ask at the checkpoint!
+  </div>
+</div>
+
+<div class="footer">
+  Webster Family · Texas Trip · May 15–17, 2026<br>
+  <span style="color:var(--gold);">✦</span> Sic 'em Bears! 🐻 <span style="color:var(--gold);">✦</span>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
